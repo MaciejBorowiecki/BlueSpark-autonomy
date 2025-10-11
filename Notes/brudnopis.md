@@ -23,7 +23,7 @@
 2. **Object Detection**
    - Implement YOLO for real-time detection of obstacles.
 
-3. **Object Tracking**
+3. **Object Tracking** *Possibly won't be necessary for static obstacles*
    - Apply SORT to track dynamic obstacles over time and maintain consistent IDs.
 
 4. **Spatial Mapping & Classification**
@@ -35,7 +35,7 @@
    - Integrate a planner that uses the classified map to decide:
      - Which obstacles to avoid,
      - Which obstacles can be passed through,
-     - How to safely navigate around moving objects.
+     - How to safely navigate around objects.
 
 6. **Control**
    - Translate planned paths into robot commands for motors/actuators.
