@@ -43,3 +43,6 @@
 7. **Testing & Iteration**
    - Test in controlled environments, refine object classification and tracking thresholds.
 
+## Research
+
+Based on [this article](https://drive.google.com/file/d/1Y0a3Y5Xk32tmBIXpi-BSFWalChpfiyJg/view?usp=sharing) comparing different YOLO versions for underwater vision tasks, the accuracy remains relatively consistent across models, while the main improvement lies in inference speed — with newer versions, particularly YOLOv10, achieving the fastest performance.
