@@ -46,3 +46,15 @@
 ## Research
 
 Based on [this article](https://drive.google.com/file/d/1Y0a3Y5Xk32tmBIXpi-BSFWalChpfiyJg/view?usp=sharing) comparing different YOLO versions for underwater vision tasks, the accuracy remains relatively consistent across models, while the main improvement lies in inference speed — with newer versions, particularly YOLOv10, achieving the fastest performance.
+
+### Artykuły o optymalizacji YOLO na raspberry pi
+###### Jakieś losowe może warte przeczytania
+ - [ ] [learnOpenCV  - ogólne podsumowanie](https://learnopencv.com/yolo11-on-raspberry-pi/)
+ - [ ] [kilka odpowiedzi na GitHub o sposobach optymalizacji](https://github.com/ultralytics/ultralytics/issues/6019)
+ - [ ] [losowa strona z optymalizacją YOLO na raspberry i jetson](https://www.cohorte.co/blog/optimizing-yolofor-edge-devices)
+###### Na pewno warte przeczytania
+- [ ] [oficjalny poradnik ultralytics do raspberry](https://docs.ultralytics.com/guides/raspberry-pi/#raspberry-pi-series-comparison)
+- [ ] [dyskusja o używaniu YOLO z raspberry](https://github.com/orgs/ultralytics/discussions/8277)
+- [ ] [filmik ktoś osiągnął 30 fps na wykrywaniu z raspberry](https://www.youtube.com/watch?v=XKIm_R_rIeQ)
+- [ ] [techniki optymalizacyjne dla raspberry](https://medium.com/academy-team/model-optimization-techniques-for-yolo-models-f440afa93adb)
+
