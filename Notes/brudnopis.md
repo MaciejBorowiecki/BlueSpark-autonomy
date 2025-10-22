@@ -58,3 +58,15 @@ Based on [this article](https://drive.google.com/file/d/1Y0a3Y5Xk32tmBIXpi-BSFWa
 - [ ] [filmik ktoś osiągnął 30 fps na wykrywaniu z raspberry](https://www.youtube.com/watch?v=XKIm_R_rIeQ)
 - [ ] [techniki optymalizacyjne dla raspberry](https://medium.com/academy-team/model-optimization-techniques-for-yolo-models-f440afa93adb)
 
+### Artykuły o autonomicznym sterowaniu
+###### Artykuły / publikacje naukowe
+- [ ]  [Robotics Navigation Based on YOLO and Depth Camera](https://www.researchgate.net/publication/387244891_Robotics_Navigation_Based_on_YOLO_and_Depth_Camera)
+- [ ] [Using a YOLO Deep Learning Algorithm to Improve the Accuracy of 3D Object Detection by Autonomous Vehicles](https://www.mdpi.com/2032-6653/16/1/9)
+- [ ] [Thorough Analysis of Object Detection for Autonomous Vehicles](https://www.preprints.org/manuscript/202503.0302)
+- [ ] [Mobile Robot Obstacle Detection and Avoidance with NAV‑Stack and YOLOv5](https://www.ijmerr.com/2024/IJMERR-V13N2-219.pdf)
+- [ ] [Deep learning for object detection and scene perception in autonomous vehicles](https://www.sciencedirect.com/science/article/pii/S2590005621000059)
+###### Filmy / tutorial 
+- [ ] [yt: 3d object detection & navigation with darknet & yolo](https://www.youtube.com/watch?v=HRxPnfCAmRw)
+- [ ] [How to automatically navigate a robot to objects detected with yolov5](https://www.youtube.com/watch?v=Ob8lGOHBrig)
+- [ ] [object detection using yolo3d with ros2](# Object detection using Yolo3D with ROS2)
+- [ ] [object detection with yolov5: a complete guide](https://medium.com/%40mansooralam129047/object-detection-with-yolov5-a-complete-guide-aa5f158b307c)
