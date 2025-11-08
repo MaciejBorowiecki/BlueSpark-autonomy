@@ -5,9 +5,11 @@
 ### Description
 
 The core logic is based on the following formula:
+
 $$
-Z = \frac{W * F}{P}
+Z = \frac{W \cdot F}{P}
 $$
+
 Where:
 * $Z$ = distance (depth) to the object.
 * $W$ = The **known real width** of the object in cm, which is stored in `KNOWN_WIDTHS` dictionary
@@ -45,11 +47,13 @@ pip install opencv-python ultralytics
 
 Overall idea for this method is the same as for the previous version of triangle similarity *(1)* but Unlike simpler models, this project relies on a full **camera calibration matrix (K)** to achieve higher accuracy.
 1.  **Depth (Z):** The depth is calculated using the known real-world size of an object ($W_{\text{real}}$) and its perceived size in pixels ($P_{\text{pixels}}$), using the camera's calibrated focal length ($f_y$ or $f_x$).
+   
     $$
     Z = \frac{W_{\text{real}} \cdot f_y}{P_{\text{height}}} \quad \text{or} \quad Z = \frac{W_{\text{real}} \cdot f_x}{P_{\text{width}}}
     $$
 
 2.  **3D Position (X, Y):** Once the depth ($Z$) is known, we "un-project" the object's 2D pixel center ($p_x, p_y$) back into 3D space using the camera's calibrated principal point ($c_x, c_y$):
+   
     $$
     X = \frac{(p_x - c_x) \cdot Z}{f_x}
     $$
@@ -138,6 +142,7 @@ Define the real-world sizes (in **meters**) of the objects you want to track in 
             "description": "Phone - 15cm width"
         },
         // etc.
+    }
 }
 ```
 
