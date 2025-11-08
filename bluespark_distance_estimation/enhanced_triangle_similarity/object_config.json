@@ -1,0 +1,29 @@
+{
+    "objects": {
+        "bottle": {
+            "real_size": 0.25,
+            "reference_dim": "height",
+            "description": "bottle - 25cm height"
+        },
+        "cell phone": {
+            "real_size": 0.15, 
+            "reference_dim": "width",
+            "description": "Phone - 15cm width"
+        },
+        "cup": {
+            "real_size": 0.1,
+            "reference_dim": "height", 
+            "description": "Cup - 10cm height"
+        },
+        "chair": {
+            "real_size": 0.45,
+            "reference_dim": "height",
+            "description": "Char - 45cm height (seat)"
+        },
+        "person": {
+            "real_size": 1.8,
+            "reference_dim":"height",
+            "description":"Person - 180cm height"
+        }
+    }
+}
