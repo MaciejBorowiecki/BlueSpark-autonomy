@@ -48,18 +48,19 @@ pip install opencv-python ultralytics
 Overall idea for this method is the same as for the previous version of triangle similarity *(1)* but Unlike simpler models, this project relies on a full **camera calibration matrix (K)** to achieve higher accuracy.
 1.  **Depth (Z):** The depth is calculated using the known real-world size of an object ($W_{\text{real}}$) and its perceived size in pixels ($P_{\text{pixels}}$), using the camera's calibrated focal length ($f_y$ or $f_x$).
    
-    $$
-    Z = \frac{W_{\text{real}} \cdot f_y}{P_{\text{height}}} \quad \text{or} \quad Z = \frac{W_{\text{real}} \cdot f_x}{P_{\text{width}}}
-    $$
+$$
+Z = \frac{W_{\text{real}} \cdot f_y}{P_{\text{height}}} \quad \text{or} \quad Z = \frac{W_{\text{real}} \cdot f_x}{P_{\text{width}}}
+$$
 
 2.  **3D Position (X, Y):** Once the depth ($Z$) is known, we "un-project" the object's 2D pixel center ($p_x, p_y$) back into 3D space using the camera's calibrated principal point ($c_x, c_y$):
    
-    $$
-    X = \frac{(p_x - c_x) \cdot Z}{f_x}
-    $$
-    $$
-    Y = \frac{(p_y - c_y) \cdot Z}{f_y}
-    $$
+$$
+X = \frac{(p_x - c_x) \cdot Z}{f_x}
+$$
+
+$$
+Y = \frac{(p_y - c_y) \cdot Z}{f_y}
+$$
 
 All parameters ($f_x, f_y, c_x, c_y$) are loaded directly from the `camera_calibration.json` file.
 
