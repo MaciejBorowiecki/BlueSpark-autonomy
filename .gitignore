@@ -1,0 +1,34 @@
+# python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# virtual environments
+venv/
+env/
+*.venv
+
+# environmental files
+.env
+.env.*
+
+# vsc settings
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# log files
+*.log
+*.sqlite
+*.db
+
+# system files
+.DS_Store
+Thumbs.db
+
+# distribution catalogs
+build/
+dist/
+*.egg-info/
