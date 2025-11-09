@@ -31,4 +31,8 @@ Thumbs.db
 # distribution catalogs
 build/
 dist/
-*.egg-info/
+*.egg-info/__pycache__/
+*.pyc
+.venv/
+.idea/
+.DS_Store

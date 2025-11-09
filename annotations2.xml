@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<annotations>
+  <version>1.1</version>
+  <meta>
+    <task>
+      <id>1763557</id>
+      <name>val</name>
+      <size>16</size>
+      <mode>annotation</mode>
+      <overlap>0</overlap>
+      <bugtracker></bugtracker>
+      <created>2025-11-09 21:42:59.323441+00:00</created>
+      <updated>2025-11-09 21:59:39.107830+00:00</updated>
+      <subset>Validation</subset>
+      <start_frame>0</start_frame>
+      <stop_frame>15</stop_frame>
+      <frame_filter></frame_filter>
+      <segments>
+        <segment>
+          <id>3222156</id>
+          <start>0</start>
+          <stop>15</stop>
+          <url>https://app.cvat.ai/api/jobs/3220787</url>
+        </segment>
+      </segments>
+      <owner>
+        <username>JanMikolajczyk</username>
+        <email>mikojasiek@gmail.com</email>
+      </owner>
+      <assignee></assignee>
+      <labels>
+        <label>
+          <name>frame</name>
+          <color>#69b544</color>
+          <type>any</type>
+          <attributes>
+          </attributes>
+        </label>
+      </labels>
+    </task>
+    <dumped>2025-11-09 21:59:56.827686+00:00</dumped>
+  </meta>
+  <image id="0" name="IMG_0348.jpeg" width="5712" height="4284">
+    <box label="frame" source="manual" occluded="0" xtl="686.96" ytl="383.70" xbr="4541.02" ybr="4038.15" z_order="0">
+    </box>
+    <points label="frame" source="manual" occluded="0" points="748.38,475.83;4464.25,567.96;4049.67,3984.41;1362.57,3216.67" z_order="0">
+    </points>
+  </image>
+  <image id="1" name="IMG_0349.jpeg" width="5712" height="4284">
+    <points label="frame" source="manual" occluded="0" points="1408.64,230.15;4894.19,775.25;4057.35,3961.38;1769.48,2771.38" z_order="0">
+    </points>
+    <box label="frame" source="manual" occluded="0" xtl="1339.54" ytl="145.70" xbr="4947.93" ybr="4022.80" z_order="0">
+    </box>
+  </image>
+  <image id="2" name="IMG_0350.jpeg" width="5712" height="4284">
+    <points label="frame" source="manual" occluded="0" points="1861.61,191.77;4993.99,1235.90;3888.44,4191.70;2091.93,2548.73" z_order="0">
+    </points>
+    <box label="frame" source="manual" occluded="0" xtl="1784.83" ytl="122.67" xbr="5086.12" ybr="4245.44" z_order="0">
+    </box>
+  </image>
+  <image id="3" name="IMG_0351.jpeg" width="5712" height="4284">
+    <points label="frame" source="manual" occluded="0" points="1853.93,391.38;3827.02,322.28;3750.25,2594.80;2015.15,3946.02" z_order="0">
+    </points>
+    <box label="frame" source="manual" occluded="0" xtl="1800.19" ytl="245.51" xbr="3873.09" ybr="4007.44" z_order="0">
+    </box>
+  </image>
+  <image id="4" name="IMG_0352.jpeg" width="5712" height="4284">
+    <points label="frame" source="manual" occluded="0" points="1792.51,483.51;3757.93,352.99;3688.83,2525.70;1946.06,3807.83" z_order="0">
+    </points>
+    <box label="frame" source="manual" occluded="0" xtl="1738.77" ytl="253.19" xbr="3788.64" ybr="3884.61" z_order="0">
+    </box>
+  </image>
+  <image id="5" name="IMG_0353.jpeg" width="5712" height="4284">
+    <points label="frame" source="manual" occluded="0" points="2137.99,852.03;3573.67,905.77;3527.61,2256.99;2168.70,2249.32" z_order="0">
+    </points>
+    <box label="frame" source="manual" occluded="0" xtl="2068.90" ytl="805.96" xbr="3596.70" ybr="2295.38" z_order="0">
+    </box>
+  </image>
+  <image id="6" name="IMG_0354.jpeg" width="5712" height="4284">
+    <points label="frame" source="manual" occluded="0" points="2352.96,706.15;3788.64,736.86;3719.54,2080.41;2391.35,2080.41" z_order="0">
+    </points>
+    <box label="frame" source="manual" occluded="0" xtl="2322.25" ytl="652.41" xbr="3819.35" ybr="2118.80" z_order="0">
+    </box>
+  </image>
+  <image id="7" name="IMG_0355.jpeg" width="5712" height="4284">
+    <box label="frame" source="manual" occluded="0" xtl="1923.02" ytl="590.99" xbr="3658.12" ybr="2218.61" z_order="0">
+    </box>
+    <points label="frame" source="manual" occluded="0" points="2022.83,713.83;3527.61,644.73;3573.67,2118.80;2199.41,2072.73" z_order="0">
+    </points>
+  </image>
+  <image id="8" name="IMG_0356.jpeg" width="5712" height="4284">
+    <box label="frame" source="manual" occluded="0" xtl="1132.25" ytl="345.32" xbr="4625.48" ybr="3608.22" z_order="0">
+    </box>
+    <points label="frame" source="manual" occluded="0" points="1170.64,445.12;4548.70,552.61;4141.80,3562.15;1669.67,2947.96" z_order="0">
+    </points>
+  </image>
+  <image id="9" name="IMG_0357.jpeg" width="5712" height="4284">
+    <box label="frame" source="manual" occluded="0" xtl="1531.48" ytl="1113.06" xbr="4372.12" ybr="3370.22" z_order="0">
+    </box>
+    <points label="frame" source="manual" occluded="0" points="1569.86,1174.48;4310.70,1174.48;4111.09,3324.15;1899.99,3155.25" z_order="0">
+    </points>
+  </image>
+  <image id="10" name="IMG_0358.jpeg" width="5712" height="4284">
+    <box label="frame" source="manual" occluded="0" xtl="1562.19" ytl="644.73" xbr="3734.90" ybr="2802.09" z_order="0">
+    </box>
+    <points label="frame" source="manual" occluded="0" points="1600.57,698.48;3665.80,706.15;3635.09,2533.38;1746.44,2763.70" z_order="0">
+    </points>
+  </image>
+  <image id="11" name="IMG_0359.jpeg" width="5712" height="4284">
+    <points label="frame" source="manual" occluded="0" points="1493.09,130.35;4947.93,306.93;4594.77,3147.57;1708.06,3708.02" z_order="0">
+    </points>
+    <box label="frame" source="manual" occluded="0" xtl="1431.67" ytl="61.25" xbr="4978.64" ybr="3754.09" z_order="0">
+    </box>
+  </image>
+  <image id="12" name="IMG_0360.jpeg" width="5712" height="4284">
+    <box label="frame" source="manual" occluded="0" xtl="871.22" ytl="652.41" xbr="4871.15" ybr="3938.35" z_order="0">
+    </box>
+    <points label="frame" source="manual" occluded="0" points="909.61,821.32;4771.35,752.22;4533.35,3876.93;1439.35,3823.19" z_order="0">
+    </points>
+  </image>
+  <image id="13" name="IMG_0361.jpeg" width="5712" height="4284">
+    <box label="frame" source="manual" occluded="0" xtl="1539.15" ytl="744.54" xbr="3949.86" ybr="3017.06" z_order="0">
+    </box>
+    <points label="frame" source="manual" occluded="0" points="1585.22,798.28;3911.48,1005.57;3650.44,2970.99;1823.22,2594.80" z_order="0">
+    </points>
+  </image>
+  <image id="14" name="IMG_0362.jpeg" width="5712" height="4284">
+    <points label="frame" source="manual" occluded="0" points="2268.51,299.25;4894.19,222.48;4901.86,2894.22;2237.80,2825.12" z_order="0">
+    </points>
+    <box label="frame" source="manual" occluded="0" xtl="2168.70" ytl="153.38" xbr="5024.70" ybr="2970.99" z_order="0">
+    </box>
+  </image>
+  <image id="15" name="IMG_0363.jpeg" width="5712" height="4284">
+    <points label="frame" source="manual" occluded="0" points="2091.93,736.86;4264.64,805.96;4487.28,2947.96;2145.67,3216.67" z_order="0">
+    </points>
+    <box label="frame" source="manual" occluded="0" xtl="2015.15" ytl="652.41" xbr="4564.06" ybr="3270.41" z_order="0">
+    </box>
+  </image>
+</annotations>
