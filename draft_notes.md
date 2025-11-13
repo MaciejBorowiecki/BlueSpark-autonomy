@@ -1,4 +1,4 @@
-# This notepad contains information gathered before the repository was created
+# This notepad contains information gathered before the repository was created and random thoughts
 
 ### List of teams from SAUVC 2024/2025 and their technologies (generated with ChatGPT)
 
