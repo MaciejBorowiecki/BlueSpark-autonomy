@@ -29,95 +29,121 @@ class SimpleDistanceCalculator:
 
     # load camera calibration information
     def load_calibration(self, calibration_file):
-        with open(calibration_file, "r") as f:
-            calib = json.load(f)
+        try:
+            with open(calibration_file, "r") as f:
+                calib = json.load(f)
+            camera_matrix = np.array(calib["camera_matrix"])
+            dist_coeffs = np.array(calib["dist_coeffs"])
+            return camera_matrix, dist_coeffs
+        except FileNotFoundError:
+            print("Warning: Calibration file not found, using defaults.")
+            # Default matrix for generic webcam (approximate)
+            return np.array([[800, 0, 320], [0, 800, 240], [0, 0, 1]]), np.zeros(5)
 
-        camera_matrix = np.array(calib["camera_matrix"])
-        dist_coeffs = np.array(calib["dist_coeffs"])
-
-        return camera_matrix, dist_coeffs
-
-    # calculate distance and from detected objects
-    def calculate_distance_and_angle(self, bbox, label_name):
+    # calculate distance, position and object rotation
+    def calculate_pose(self, bbox, label_name):
         """
-        Calculates distance and angle using bounding box.
-
-        Args:
-            bbox: [x1, y1, x2, y2] - bounding box
-            label_name: object name (must be in objext_attrs)
-
-        Returns:
-            pos_x, pos_y, pos_z, horizontal_angle, vertical_angle
+        Calculates distance, global angles and OBJECT ROTATION using bounding box.
         """
         if label_name not in self.object_attrs:
-            return None, None, None, None, None
+            return None
 
-        # camera parameters from camera matrix
-        fx = self.camera_matrix[0, 0]   # focal length x
-        fy = self.camera_matrix[1, 1]   # focal length y
-        ppx = self.camera_matrix[0, 2]  # principal point x
-        ppy = self.camera_matrix[1, 2]  # principal point y
+        # camera parameters
+        fx = self.camera_matrix[0, 0]
+        fy = self.camera_matrix[1, 1]
+        ppx = self.camera_matrix[0, 2]
+        ppy = self.camera_matrix[1, 2]
 
         x1, y1, x2, y2 = bbox
 
         # bounding box dimensions
-        obj_width = x2 - x1
-        obj_height = y2 - y1
+        obj_width_px = x2 - x1
+        obj_height_px = y2 - y1
         obj_center_x = (x2 + x1) / 2
         obj_center_y = (y2 + y1) / 2
 
-        # objects attributes
-        real_size = self.object_attrs[label_name]["real_size"]
-        reference_dim = self.object_attrs[label_name]["reference_dim"]
+        # objects attributes (Real dimensions)
+        real_h = self.object_attrs[label_name]["real_height"]
+        real_w = self.object_attrs[label_name]["real_width"]
 
-        # calculate distance (z dimension)
-        if reference_dim == "width":
-            pos_z = real_size * fx / obj_width
-        elif reference_dim == "height":
-            pos_z = real_size * fy / obj_height
-        else:
-            return None, None, None, None, None
+        # --- 1. Calculate Distance (Z) ---
+        # We use HEIGHT for distance calculation because it is invariant 
+        # to horizontal rotation (yaw) of the object.
+        pos_z = real_h * fy / obj_height_px
 
-        # calculate X,Y position in 3 dimensions
+        # --- 2. Calculate X, Y positions ---
         pos_x = (obj_center_x - ppx) * pos_z / fx
         pos_y = (obj_center_y - ppy) * pos_z / fy
 
-        # calculate angles in degrees
-        horizontal_angle = math.atan2(pos_x, pos_z) * (180.0 / math.pi)
-        vertical_angle = math.atan2(pos_y, pos_z) * (180.0 / math.pi)
+        # --- 3. Calculate Angles relative to Camera Center ---
+        cam_h_angle = math.atan2(pos_x, pos_z) * (180.0 / math.pi)
+        cam_v_angle = math.atan2(pos_y, pos_z) * (180.0 / math.pi)
 
-        return pos_x, pos_y, pos_z, horizontal_angle, vertical_angle
+        # --- 4. Calculate Object Rotation (Yaw) using Aspect Ratio ---
+        # Real Aspect Ratio (Width / Height)
+        real_ratio = real_w / real_h
+        
+        # Observed Aspect Ratio (Width / Height)
+        obs_ratio = obj_width_px / obj_height_px
+        
+        # Logic: When object rotates, its observed width decreases, so obs_ratio drops.
+        # factor = Observed / Real. 
+        # If object is facing us perfectly, factor should be ~1.0.
+        # If object is rotated 60 deg, factor should be ~0.5 (cos 60).
+        
+        ratio_factor = obs_ratio / real_ratio
+
+        # Clamp value to range [-1, 1] to avoid math domain errors due to noise
+        if ratio_factor > 1.0: 
+            ratio_factor = 1.0
+        if ratio_factor < -1.0:
+            ratio_factor = -1.0
+            
+        # Calculate angle in radians then degrees
+        # acos returns 0 to pi (0 to 180 degrees)
+        obj_rotation_rad = math.acos(ratio_factor)
+        obj_rotation_deg = obj_rotation_rad * (180.0 / math.pi)
+
+        return {
+            "pos": (pos_x, pos_y, pos_z),
+            "cam_angles": (cam_h_angle, cam_v_angle),
+            "obj_rotation": obj_rotation_deg,
+            "ratios": (real_ratio, obs_ratio)
+        }
 
     # Draw objects info
     def draw_info(self, frame, bbox, label_name, confidence):
         x1, y1, x2, y2 = bbox
+        
+        data = self.calculate_pose(bbox, label_name)
 
-        # calculate distance and angles
-        pos_x, pos_y, pos_z, h_angle, v_angle = self.calculate_distance_and_angle(
-            bbox, label_name)
-
-        if pos_z is None:
+        if data is None:
             return
 
+        pos_x, pos_y, pos_z = data["pos"]
+        h_angle, v_angle = data["cam_angles"]
+        obj_rot = data["obj_rotation"]
+        
         # draw bounding box
-        cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+        # Change color based on rotation (Green = frontal, Red = rotated side)
+        color_g = int(255 * (1 - (obj_rot/90.0)))
+        color_r = int(255 * (obj_rot/90.0))
+        cv2.rectangle(frame, (x1, y1), (x2, y2), (0, color_g, color_r), 2)
 
-        # prepere information to print
-        distance_text = f"{pos_z:.2f}m"
-        angle_text = f"H:{h_angle:.1f}° V:{v_angle:.1f}°"
-        position_text = f"X:{pos_x:.2f}m Y:{pos_y:.2f}m"
-        label_text = f"{label_name}: {confidence:.2f}"
+        # Prepare text
+        dist_text = f"Dist: {pos_z:.2f}m"
+        rot_text  = f"Rot: {obj_rot:.0f} deg"
+        ratio_text = f"Ratio: {data['ratios'][1]:.2f}/{data['ratios'][0]:.2f}"
+        label_text = f"{label_name} ({confidence:.2f})"
 
-        # print information
-        y_offset = y1 - 10
-        texts = [distance_text, angle_text, position_text, label_text]
-        colors = [(0, 255, 255), (255, 255, 0), (255, 0, 255), (0, 255, 0)]
-
-        for i, text in enumerate(texts):
-            if y_offset < 20:  # decide where to put information (above or under object)
-                y_offset = y2 + 20 + i * 20
-            else:
-                y_offset = y1 - 10 - i * 20
-
-            cv2.putText(frame, text, (x1, y_offset),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, colors[i], 1)
+        # Print information
+        lines = [label_text, dist_text, rot_text, ratio_text]
+        
+        # Dynamic text positioning
+        for i, line in enumerate(lines):
+            y_pos = y1 - 10 - (len(lines) - i - 1) * 20
+            if y_pos < 10: 
+                y_pos = y2 + 20 + i * 20
+                
+            cv2.putText(frame, line, (x1, y_pos),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 1)

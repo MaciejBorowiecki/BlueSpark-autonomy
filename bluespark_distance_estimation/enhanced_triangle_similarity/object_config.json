@@ -1,29 +1,34 @@
 {
     "objects": {
         "bottle": {
-            "real_size": 0.25,
-            "reference_dim": "height",
-            "description": "bottle - 25cm height"
+            "real_height": 0.25,
+            "real_width": 0.07,
+            "description": "bottle - 25cm H, 7cm W"
         },
         "cell phone": {
-            "real_size": 0.15, 
-            "reference_dim": "width",
-            "description": "Phone - 15cm width"
+            "real_height": 0.15, 
+            "real_width": 0.075,
+            "description": "Phone - 15cm H, 7.5cm W"
         },
         "cup": {
-            "real_size": 0.1,
-            "reference_dim": "height", 
-            "description": "Cup - 10cm height"
+            "real_height": 0.1,
+            "real_width": 0.08,
+            "description": "Cup - 10cm H, 8cm W"
         },
         "chair": {
-            "real_size": 0.45,
-            "reference_dim": "height",
-            "description": "Char - 45cm height (seat)"
+            "real_height": 0.95,
+            "real_width": 0.45,
+            "description": "Chair - 95cm H, 45cm W"
         },
         "person": {
-            "real_size": 1.8,
-            "reference_dim":"height",
-            "description":"Person - 180cm height"
+            "real_height": 1.75,
+            "real_width": 0.50,
+            "description": "Person - 175cm H, 50cm W"
+        },
+        "gate": {
+            "real_height": 1.0,
+            "real_width": 1.0,
+            "description": "Race Gate - 50cm H, 100cm W"
         }
     }
 }

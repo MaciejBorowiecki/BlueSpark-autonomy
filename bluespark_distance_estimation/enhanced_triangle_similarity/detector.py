@@ -2,7 +2,7 @@ from ultralytics import YOLO
 import cv2
 
 class ObjectDetector:
-    def __init__(self, model_path="yolo11m.pt"):
+    def __init__(self, model_path="trained_gate.pt"):
         self.model = YOLO(model_path).to("cpu")
         self.class_names = self.model.names
     
