@@ -56,51 +56,33 @@ class SimpleDistanceCalculator:
 
         x1, y1, x2, y2 = bbox
 
-        # bounding box dimensions
         obj_width_px = x2 - x1
         obj_height_px = y2 - y1
         obj_center_x = (x2 + x1) / 2
         obj_center_y = (y2 + y1) / 2
 
-        # objects attributes (Real dimensions)
         real_h = self.object_attrs[label_name]["real_height"]
         real_w = self.object_attrs[label_name]["real_width"]
 
-        # --- 1. Calculate Distance (Z) ---
-        # We use HEIGHT for distance calculation because it is invariant 
-        # to horizontal rotation (yaw) of the object.
         pos_z = real_h * fy / obj_height_px
 
-        # --- 2. Calculate X, Y positions ---
         pos_x = (obj_center_x - ppx) * pos_z / fx
         pos_y = (obj_center_y - ppy) * pos_z / fy
 
-        # --- 3. Calculate Angles relative to Camera Center ---
         cam_h_angle = math.atan2(pos_x, pos_z) * (180.0 / math.pi)
         cam_v_angle = math.atan2(pos_y, pos_z) * (180.0 / math.pi)
 
-        # --- 4. Calculate Object Rotation (Yaw) using Aspect Ratio ---
-        # Real Aspect Ratio (Width / Height)
         real_ratio = real_w / real_h
         
-        # Observed Aspect Ratio (Width / Height)
         obs_ratio = obj_width_px / obj_height_px
-        
-        # Logic: When object rotates, its observed width decreases, so obs_ratio drops.
-        # factor = Observed / Real. 
-        # If object is facing us perfectly, factor should be ~1.0.
-        # If object is rotated 60 deg, factor should be ~0.5 (cos 60).
         
         ratio_factor = obs_ratio / real_ratio
 
-        # Clamp value to range [-1, 1] to avoid math domain errors due to noise
         if ratio_factor > 1.0: 
             ratio_factor = 1.0
         if ratio_factor < -1.0:
             ratio_factor = -1.0
             
-        # Calculate angle in radians then degrees
-        # acos returns 0 to pi (0 to 180 degrees)
         obj_rotation_rad = math.acos(ratio_factor)
         obj_rotation_deg = obj_rotation_rad * (180.0 / math.pi)
 
@@ -111,7 +93,6 @@ class SimpleDistanceCalculator:
             "ratios": (real_ratio, obs_ratio)
         }
 
-    # Draw objects info
     def draw_info(self, frame, bbox, label_name, confidence):
         x1, y1, x2, y2 = bbox
         
@@ -124,22 +105,17 @@ class SimpleDistanceCalculator:
         h_angle, v_angle = data["cam_angles"]
         obj_rot = data["obj_rotation"]
         
-        # draw bounding box
-        # Change color based on rotation (Green = frontal, Red = rotated side)
         color_g = int(255 * (1 - (obj_rot/90.0)))
         color_r = int(255 * (obj_rot/90.0))
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, color_g, color_r), 2)
 
-        # Prepare text
         dist_text = f"Dist: {pos_z:.2f}m"
         rot_text  = f"Rot: {obj_rot:.0f} deg"
         ratio_text = f"Ratio: {data['ratios'][1]:.2f}/{data['ratios'][0]:.2f}"
         label_text = f"{label_name} ({confidence:.2f})"
 
-        # Print information
         lines = [label_text, dist_text, rot_text, ratio_text]
         
-        # Dynamic text positioning
         for i, line in enumerate(lines):
             y_pos = y1 - 10 - (len(lines) - i - 1) * 20
             if y_pos < 10: 

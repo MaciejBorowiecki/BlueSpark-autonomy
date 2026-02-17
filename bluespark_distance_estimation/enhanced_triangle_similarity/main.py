@@ -1,76 +1,66 @@
 import cv2
 import time
-import os
+import sys
 from datetime import datetime
 from detector import ObjectDetector
 from simple_distance_calculator import SimpleDistanceCalculator
+from pathlib import Path
+
+# FIXME for remote_addons
+project_root=Path(__file__).resolve().parents[2]
+if str(project_root) not in sys.path:
+    sys.path.append(str(project_root))
+
+try:
+    from remote_addons.vision_manager import VisionControl
+    from remote_addons.exceptions import CameraError
+except ImportError as e:
+    print(f"Import error: {e}.")
+    sys.exit(1)
+    
+from remote_addons.camera import UniversalCamera
 
 def main():
-    # --- RECORDING CONFIGURATION ---
-    save_folder = "images"
-    os.makedirs(save_folder, exist_ok=True)  # Creates images folder if it doesn't exist
-    
-    auto_save_interval = 2.0  # How often (seconds) to automatically save detected gate
-    last_auto_save_time = 0   # Helper variable for time tracking
-    # ---------------------------
-
-    # Initialization
-    detector = ObjectDetector("trained_gate.pt")
+    model_name = "yolo11n.pt"
+    model_path = project_root / "ml_models" / model_name
+    detector = ObjectDetector(str(model_path))
     distance_calc = SimpleDistanceCalculator()
+
+    try:
+        vision_manager = VisionControl()
+    except CameraError as e:
+        # probably camera initialization error
+        exit(1)
     
-    print("Enhanced Pose Estimation & Recording")
-    print("Controls:")
-    print(" -> 'q': Quit")
-    print(" -> 'SPACE': Save image manually")
-    
-    cap = cv2.VideoCapture(0)
-    # cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280) 
-    # cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
-    
-    if not cap.isOpened():
-        print("Cannot open camera")
-        return
     
     frame_count = 0
     fps = 0
     last_time = time.time()
     
     while True:
-        ret, frame = cap.read()
-        if not ret:
-            break
+        ret, frame = vision_manager.read()
+        if not ret or frame is None:
+            continue
 
-        # Copy of clean frame (if you want to save images WITHOUT boxes for training)
-        # clean_frame = frame.copy() 
-
-        detections = detector.detect_objects(frame, threshold=0.5, imgsz=640)
+        detections = detector.detect_objects(frame, threshold=0.5, imgsz=224)
         
-        gate_detected = False # Flag, whether a gate is present in this frame
+        gate_detected = False 
 
         for detection in detections:
             x1, y1, x2, y2, label, conf = detection
             
-            # If gate detected, set flag to True
             if label == "gate":
                 gate_detected = True
 
-            # Drawing information
+            # drawing information
             if label in distance_calc.object_attrs:
                 distance_calc.draw_info(frame, (x1, y1, x2, y2), label, conf)
             else:
                 cv2.rectangle(frame, (x1, y1), (x2, y2), (100, 100, 100), 1)
                 cv2.putText(frame, label, (x1, y1-5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (100,100,100), 1)
         
-        # --- AUTO-SAVE LOGIC (When gate detected) ---
+        # calculate FPS
         current_time = time.time()
-        if gate_detected and (current_time - last_auto_save_time > auto_save_interval):
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
-            filename = f"{save_folder}/auto_gate_{timestamp}.jpg"
-            cv2.imwrite(filename, frame)
-            print(f"[AUTO] Gate image saved: {filename}")
-            last_auto_save_time = current_time
-
-        # Calculate FPS
         frame_count += 1
         if current_time - last_time >= 1.0:
             fps = frame_count / (current_time - last_time)
@@ -80,31 +70,14 @@ def main():
         cv2.putText(frame, f"FPS: {fps:.1f}", (10, 30),
                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
         
-        # Recording mode information
-        if gate_detected:
-            cv2.circle(frame, (620, 20), 10, (0, 0, 255), -1) # Red "REC" dot
-        
-        cv2.imshow("Pose & Rotation Estimation", frame)
-        
-        # --- KEYBOARD HANDLING ---
+        vision_manager.update(frame)
+        # keyboard controls
         key = cv2.waitKey(1) & 0xFF
         
         if key == ord('q'):
             break
-        elif key == ord(' '): # ASCII code for space is 32
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            
-            # Saving images of detected object - manual
-            filename = f"{save_folder}/manual_{timestamp}.jpg"
-            cv2.imwrite(filename, frame)
-            print(f"[MANUAL] Image saved: {filename}")
-            # Screen flash (optional visual confirmation effect)
-            cv2.rectangle(frame, (0,0), (frame.shape[1], frame.shape[0]), (255,255,255), 5)
-            cv2.imshow("Pose & Rotation Estimation", frame)
-            cv2.waitKey(50) # Short pause for effect
     
-    cap.release()
-    cv2.destroyAllWindows()
+    vision_manager.stop()
 
 if __name__ == "__main__":
     main()
