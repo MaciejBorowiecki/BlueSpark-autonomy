@@ -1,4 +1,4 @@
-from ultralytics import YOLO
+from ultralytics.models import YOLO
 import cv2
 
 model = YOLO("yolo11s.pt").to("cpu")
